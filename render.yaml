@@ -1,0 +1,18 @@
+# Render Blueprint: backend API as a free web service.
+# Database is Supabase (Render's free Postgres expires after 30 days).
+services:
+  - type: web
+    name: ledger-api
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false # paste the Supabase session-pooler connection string in the dashboard
+      - key: DATABASE_SSL
+        value: "true"
+      - key: CORS_ORIGIN
+        sync: false # e.g. https://your-site.netlify.app
