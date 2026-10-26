@@ -39,13 +39,33 @@ Open http://localhost:5173, create two accounts, add credits/debits and try a tr
 
 ### Using Supabase (or any PostgreSQL)
 
+Create `backend/.env` (it is git-ignored, so it never leaves your machine):
+
+```bash
+DATABASE_URL=postgresql://postgres.<project-ref>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres
+DATABASE_SSL=true
+```
+
+Then:
+
 ```bash
 cd backend
-cp .env.example .env         # Windows: copy .env.example .env
-# set DATABASE_URL to the Supabase "Session pooler" connection string and DATABASE_SSL=true
 npm run migrate              # optional: the server also applies the schema on startup
 npm start
 ```
+
+### Environment variables
+
+No configuration is needed for local development. All variables are optional.
+
+| Where | Variable | Default | Purpose |
+| ----- | -------- | ------- | ------- |
+| backend | `PORT` | `4000` | Port the API listens on |
+| backend | `DATABASE_URL` | *(empty)* | PostgreSQL connection string (Supabase **Session pooler**). Empty = embedded PGlite |
+| backend | `DATABASE_SSL` | `false` | `true` for Supabase / any hosted Postgres that requires TLS |
+| backend | `PGLITE_DATA_DIR` | `./.data/ledger` | Where the embedded database stores its files |
+| backend | `CORS_ORIGIN` | `*` | Allowed frontend origin(s), comma-separated, e.g. `https://your-site.netlify.app` |
+| frontend | `VITE_API_URL` | *(empty)* | Backend base URL for production builds. Empty = Vite dev proxy to `localhost:4000` |
 
 ## Tests
 

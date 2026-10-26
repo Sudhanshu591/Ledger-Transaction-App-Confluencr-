@@ -20,10 +20,9 @@ Target architecture, matching the interview setup guide:
 2. In **Project Settings → Database → Connection string**, copy the **Session pooler** URI. It looks like:
    `postgresql://postgres.<ref>:<password>@aws-0-<region>.pooler.supabase.com:5432/postgres`
    The pooler is IPv4-compatible. The direct connection is IPv6-only on the free plan, and Render and many AWS setups cannot reach it.
-3. Apply the schema from your machine:
+3. Apply the schema from your machine. Create `backend/.env` (git-ignored) containing `DATABASE_URL=<uri>` and `DATABASE_SSL=true`, then:
    ```bash
    cd backend
-   cp .env.example .env     # set DATABASE_URL=<uri> and DATABASE_SSL=true
    npm run migrate
    ```
    The server also applies the (idempotent) schema on every start, so this step is a convenience.
