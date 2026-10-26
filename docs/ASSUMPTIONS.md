@@ -34,3 +34,8 @@ These are the decisions taken where the brief left room for interpretation.
 19. **No authentication.** The brief does not ask for it. In production every route would sit behind auth, and account access would be scoped to the owner.
 20. **Local development uses PGlite**, a real PostgreSQL engine compiled to WebAssembly, so the project runs with `npm install && npm run dev` and no database setup. Production uses Supabase PostgreSQL through `DATABASE_URL`. The same `schema.sql` runs on both.
 21. **Supabase's auto-generated REST API is locked down.** Row Level Security is enabled with no policies, so the public `anon` key cannot read or write ledger tables. Only the backend, connecting as the database owner, can.
+22. **Only the deployed frontend may call the API from a browser.** `CORS_ORIGIN` is set to the Netlify origin in production. Non-browser clients (curl, Postman) are unaffected, because CORS is a browser rule, not authentication.
+
+## Frontend
+23. **Balances are shown per account, never summed.** Following "Get Account Balance", the dashboard shows the selected account's balance. Adding different holders' balances together has no meaning in this ledger.
+24. **The balance is hidden until revealed.** It shows as `••••••` until the eye button is pressed, as banking apps do. This is a display choice only; the API always returns the real balance.

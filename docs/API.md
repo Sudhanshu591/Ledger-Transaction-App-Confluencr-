@@ -1,5 +1,6 @@
 # API Reference
 
+Base URL (live): `https://ledger-transaction-app-confluencr.onrender.com/api/v1`. The free instance sleeps when idle, so the first request can take up to a minute.
 Base URL (local): `http://localhost:4000/api/v1`
 All requests and responses are JSON. Timestamps are ISO-8601 UTC. IDs are UUIDs.
 Amounts are JSON numbers with at most 2 decimal places (numeric strings such as `"50.00"` are also accepted on input).

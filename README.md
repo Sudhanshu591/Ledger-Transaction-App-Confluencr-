@@ -2,22 +2,36 @@
 
 A full-stack transaction ledger: a REST API for accounts, credit/debit transactions, balances, paginated history and atomic money transfers, plus a React dashboard to drive it.
 
+## Live demo
+
+| | URL |
+| --- | --- |
+| **App** | https://ephemeral-scone-c3baf6.netlify.app |
+| **API** | https://ledger-transaction-app-confluencr.onrender.com/api/v1 |
+| **Health** | https://ledger-transaction-app-confluencr.onrender.com/health |
+
+The API runs on Render's free plan and sleeps after 15 minutes idle. The first request can take up to a minute; the app's status indicator shows "Waking up…" until it is ready.
+
+## Submission
+
+| Required | Where |
+| -------- | ----- |
+| 1. Source code | This repository: [`backend/`](backend), [`frontend/`](frontend) |
+| 2. README | This file |
+| 3. API documentation | [docs/API.md](docs/API.md) |
+| 4. Assumptions | [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) |
+
+Also included: [docs/PROJECT_DOCUMENTATION.md](docs/PROJECT_DOCUMENTATION.md) (architecture, how each requirement is met, testing, use of AI) and [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) (Supabase, Render, Netlify and AWS steps).
+
+## Tech stack
+
 | Layer     | Technology                                                       |
 | --------- | ---------------------------------------------------------------- |
 | Backend   | Node.js 18+ · Express 5 · Zod (validation) · `pg`                |
-| Database  | PostgreSQL. Supabase in production; embedded PGlite for local dev/tests |
+| Database  | PostgreSQL: Supabase in production; embedded PGlite for local dev and tests |
 | Frontend  | React 18 · Vite 6                                                |
 | Tests     | `node:test` · Supertest, run against a real Postgres engine (PGlite) |
-| Hosting   | AWS (App Runner / EC2 + S3/CloudFront), or Render (API) + Netlify (UI) |
-
-## Documentation
-
-| Document | Contents |
-| -------- | -------- |
-| [docs/API.md](docs/API.md) | Every endpoint, request/response examples, error codes |
-| [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md) | Decisions made where the brief was open |
-| [docs/PROJECT_DOCUMENTATION.md](docs/PROJECT_DOCUMENTATION.md) | Post-development write-up: architecture, how each requirement is met, testing, use of AI |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Supabase, Render, Netlify and AWS deployment steps |
+| Hosting   | Render (API) · Netlify (UI) · Supabase (database). AWS alternative in [DEPLOYMENT.md](docs/DEPLOYMENT.md) |
 
 ## Quick start (no database setup needed)
 
@@ -74,7 +88,7 @@ cd backend
 npm test
 ```
 
-32 tests cover account creation, credit/debit rules, insufficient balance, duplicate `reference_id` (including concurrent duplicates), validation and error codes, history filtering, pagination and ordering, transaction immutability (API and database level), balance consistency, and transfers including rollback after a mid-transfer failure.
+35 tests cover account creation, credit/debit rules, insufficient balance, duplicate `reference_id` (including concurrent duplicates), validation and error codes, history filtering, pagination and ordering, transaction immutability (API and database level), balance consistency, transfers including rollback after a mid-transfer failure, and CORS configuration.
 
 ## API at a glance
 

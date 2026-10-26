@@ -7,8 +7,8 @@
 | **Assignment** | Transaction Ledger API (plus bonus: money transfer) |
 | **Delivered** | Backend API, PostgreSQL schema, React frontend, automated tests, documentation, deployment configs |
 | **Stack** | Node.js · Express 5 · PostgreSQL (Supabase) · React 18 + Vite · Zod · node:test |
-| **Status** | All functional requirements and the bonus implemented; 32/32 automated tests passing |
-| **Live URLs** | Frontend: *add after deploy* · API: *add after deploy* |
+| **Status** | All functional requirements and the bonus implemented; 35/35 automated tests passing; deployed |
+| **Live URLs** | App: https://ephemeral-scone-c3baf6.netlify.app · API: https://ledger-transaction-app-confluencr.onrender.com/api/v1 |
 
 ---
 
@@ -155,7 +155,7 @@ In development, Vite proxies `/api` and `/health` to the backend, so no CORS set
 
 ## 6. Testing
 
-`cd backend && npm test`: **32 tests, all passing**. They use Node's built-in runner and Supertest against a fresh in-memory PostgreSQL per suite.
+`cd backend && npm test`: **35 tests, all passing**. They use Node's built-in runner and Supertest against a fresh in-memory PostgreSQL per suite.
 
 | Suite | Covers |
 | ----- | ------ |
@@ -163,8 +163,14 @@ In development, Vite proxies `/api` and `/health` to the backend, so no CORS set
 | `transactions.test.js` | credit/debit maths, insufficient balance leaves no trace, debit of the full balance, duplicate reference (sequential and concurrent), same reference on other accounts, every validation code, exact decimal maths (`0.1 + 0.2 = 0.3`), 405 on mutation, DB trigger blocks UPDATE/DELETE, DB CHECK blocks a negative balance, spec balance example (final 100) |
 | `history.test.js` | latest-first order, type filter, pagination metadata, filter + pagination together, page past the end, invalid page/limit/type |
 | `transfers.test.js` | spec example (A 100→70, B 50→80), insufficient funds, missing account, same account, duplicate reference, **rollback after mid-transfer failure**, entries appear in both histories |
+| `cors.test.js` | `CORS_ORIGIN` values pasted with a trailing slash, quotes, spaces or capitals still match; the configured site is allowed and other origins are refused |
 
 A manual end-to-end smoke test was also run against the real HTTP server (create → credit → duplicate → overdraw → transfer → balances → paginated history → health), with the expected status codes throughout.
+
+**Against the deployed stack:**
+- **Supabase:** schema, RLS, the immutability trigger and the conditional debit were checked inside a rolled-back transaction.
+- **Render:** the live API passed health, read, validation and error-code checks (404, 400, 405) without writing data.
+- **CORS:** verified to allow only the Netlify origin.
 
 ---
 
@@ -215,5 +221,5 @@ See the [README](../README.md) for full commands. In short:
 ```bash
 cd backend  && npm install && npm run dev    # API on :4000 (embedded Postgres, zero setup)
 cd frontend && npm install && npm run dev    # UI on :5173
-cd backend  && npm test                      # 32 tests
+cd backend  && npm test                      # 35 tests
 ```
