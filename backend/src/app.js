@@ -10,7 +10,8 @@ export function createApp({ db, corsOrigin = '*' }) {
   app.locals.db = db;
 
   app.disable('x-powered-by');
-  app.use(cors({ origin: corsOrigin === '*' ? '*' : corsOrigin.split(',').map((o) => o.trim()) }));
+  // corsOrigin: '*' or an array of exact origins (see parseCorsOrigin in config.js)
+  app.use(cors({ origin: corsOrigin }));
   app.use(express.json({ limit: '100kb' }));
 
   app.get('/health', async (req, res) => {

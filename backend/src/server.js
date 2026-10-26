@@ -14,6 +14,7 @@ await migrate(db);
 const server = createApp({ db, corsOrigin: config.corsOrigin }).listen(config.port, () => {
   const target = config.databaseUrl ? 'PostgreSQL (DATABASE_URL)' : `embedded PGlite at ${config.pgliteDataDir}`;
   console.log(`Ledger API listening on http://localhost:${config.port} using ${target}`);
+  console.log(`CORS allowed origins: ${[].concat(config.corsOrigin).join(', ')}`);
 });
 
 const shutdown = () => server.close(() => db.close().finally(() => process.exit(0)));
